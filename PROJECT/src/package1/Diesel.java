@@ -51,7 +51,7 @@ final class Diesel implements GasStation {
 		Sale = sale;
 	}
 
-	@Override
+
 	public void AddTodyData() {
 		// TODO Auto-generated method stub
 

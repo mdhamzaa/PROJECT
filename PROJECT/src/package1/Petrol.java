@@ -1,21 +1,36 @@
 package package1;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 final class Petrol implements GasStation {
 
 	private String Date;
-	private int P_Price;
-	private int S_Price;
+	private double P_Price;
+	private double S_Price;
+	private double Sale;
+	
+	
+	
 
-	private int Sale;
-
-	public Petrol(String date, int p_Price, int s_Price, int sale) {
-
+	
+	public Petrol(String date, double p_Price, double s_Price, double sale) {
+		
 		Date = date;
 		P_Price = p_Price;
 		S_Price = s_Price;
 		Sale = sale;
 	}
-
+    
+	 public Petrol(String PLine) {
+	        String values[] = PLine.split(",");
+	        this.Date = values[0];
+	        this.P_Price = Double.valueOf(values[1]);
+	        this.S_Price = Double.valueOf(values[2]);
+	        this.Sale = Double.valueOf(values[3]);
+	        
+	 }
 	public String getDate() {
 		return Date;
 	}
@@ -24,39 +39,50 @@ final class Petrol implements GasStation {
 		Date = date;
 	}
 
-	public int getP_Price() {
+	public double getP_Price() {
 		return P_Price;
 	}
 
-	public void setP_Price(int p_Price) {
+	public void setP_Price(double p_Price) {
 		P_Price = p_Price;
 	}
 
-	public int getS_Price() {
+	public double getS_Price() {
 		return S_Price;
 	}
 
-	public void setS_Price(int s_Price) {
+	public void setS_Price(double s_Price) {
 		S_Price = s_Price;
 	}
 
-	public int getSale() {
+	public double getSale() {
 		return Sale;
 	}
 
-	public void setSale(int sale) {
+	public void setSale(double sale) {
 		Sale = sale;
 	}
 
-	@Override
-	public void AddTodyData() {
-		// TODO Auto-generated method stub
+	
+	public static void AddTodyData(Petrol P) {
+		  Connection con = CreateConnection.getConnection();
+		  final String SQL = "insert into petrol values(?,?,?,?)";
+	        try(PreparedStatement stmt = con.prepareStatement(SQL)){
+	            stmt.setString(1,P.getDate());
+	            stmt.setDouble(2,P.getP_Price());
+	            stmt.setDouble(3,P.getS_Price());
+	            stmt.setDouble(4,P.getSale());
+	            int rowsAffected = stmt.executeUpdate();
+	            System.out.println(rowsAffected+" row has been added to petrol sales data.");
+	        }catch(SQLException e){
+	            e.printStackTrace();
+	        }
 
 	}
 
 	@Override
 	public void SearchByDate() {
-		// TODO Auto-generated method stub
+		
 
 	}
 

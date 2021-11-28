@@ -54,7 +54,7 @@ final class CNG implements GasStation {
 		Sale = sale;
 	}
 
-	@Override
+	
 	public void AddTodyData() {
 		// TODO Auto-generated method stub
 
