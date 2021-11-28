@@ -58,27 +58,25 @@ final class Diesel implements GasStation {
 	}
 
 	@Override
-	public void SearchByDate() {
+	public void SearchByDate(String date) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void UpdateData() {
+	public void UpdateData(String date) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
-	@Override
-	public void DeleteData() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public void profit() {
 		// TODO Auto-generated method stub
-
+		
 	}
+
+	
 
 }

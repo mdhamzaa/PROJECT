@@ -81,20 +81,30 @@ final class Petrol implements GasStation {
 	}
 
 	@Override
-	public void SearchByDate() {
+	public void SearchByDate(String date) {
 		
 
 	}
 
 	@Override
-	public void UpdateData() {
-		// TODO Auto-generated method stub
+	public void UpdateData(String date) {
+		
 
 	}
 
-	@Override
-	public void DeleteData() {
-		// TODO Auto-generated method stub
+	
+	public static void DeleteData(String d) {
+		
+		  Connection con = CreateConnection.getConnection();
+		  final String SQL = "DELETE FROM petrol WHERE dates=?";
+	        try(PreparedStatement stmt = con.prepareStatement(SQL)){
+	            stmt.setString(1,d);
+	           
+	            int rowsAffected = stmt.executeUpdate();
+	            System.out.println(rowsAffected+" row has been deleted from petrol sales data.");
+	        }catch(SQLException e){
+	            e.printStackTrace();
+	        }
 
 	}
 
