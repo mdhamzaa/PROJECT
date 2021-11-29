@@ -86,9 +86,22 @@ final class Petrol implements GasStation {
 
 	}
 
-	@Override
-	public void UpdateData(String date) {
-		
+	
+	public static void UpdateData(Petrol Pt) {
+		Connection con = CreateConnection.getConnection();
+        final String SQL = "update petrol set P_price=?, S_price=? ,sale=? where dates=? ";
+        try(PreparedStatement stmt = con.prepareStatement(SQL)){
+        	  stmt.setDouble(1, Pt.getP_Price());
+        	  stmt.setDouble(2, Pt.getS_Price());
+        	  stmt.setDouble(3, Pt.getSale());
+        	  stmt.setString(4,Pt.getDate());
+          
+            
+            int rowsAffected = stmt.executeUpdate();
+            System.out.println(rowsAffected+" rows has been updated in petrol sale data.");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
 
 	}
 
@@ -108,15 +121,22 @@ final class Petrol implements GasStation {
 
 	}
 
-	@Override
-	public void profit() {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public String toString() {
 		return "Date=" + Date + ", P_Price=" + P_Price + ", S_Price=" + S_Price + ", Sale=" + Sale + "]";
+	}
+
+	@Override
+	public void getAlldata() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void searchByprofit() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

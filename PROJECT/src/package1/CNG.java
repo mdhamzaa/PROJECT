@@ -66,8 +66,8 @@ final class CNG implements GasStation {
 
 	}
 
-	@Override
-	public void UpdateData(String date) {
+	
+	public void UpdateData() {
 		// TODO Auto-generated method stub
 
 	}
@@ -75,10 +75,18 @@ final class CNG implements GasStation {
 	
 
 
-	@Override
-	public void profit() {
-		// TODO Auto-generated method stub
+	
 
+	@Override
+	public void getAlldata() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void searchByprofit() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
