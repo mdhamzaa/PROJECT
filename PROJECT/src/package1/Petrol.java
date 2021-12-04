@@ -1,8 +1,13 @@
 package package1;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 
 final class Petrol implements GasStation {
 
@@ -10,27 +15,26 @@ final class Petrol implements GasStation {
 	private double P_Price;
 	private double S_Price;
 	private double Sale;
-	
-	
-	
 
 	
+
 	public Petrol(String date, double p_Price, double s_Price, double sale) {
-		
+
 		Date = date;
 		P_Price = p_Price;
 		S_Price = s_Price;
 		Sale = sale;
 	}
-    
-	 public Petrol(String PLine) {
-	        String values[] = PLine.split(",");
-	        this.Date = values[0];
-	        this.P_Price = Double.valueOf(values[1]);
-	        this.S_Price = Double.valueOf(values[2]);
-	        this.Sale = Double.valueOf(values[3]);
-	        
-	 }
+
+	public Petrol(String PLine) {
+		String values[] = PLine.split(",");
+		this.Date = values[0];
+		this.P_Price = Double.valueOf(values[1]);
+		this.S_Price = Double.valueOf(values[2]);
+		this.Sale = Double.valueOf(values[3]);
+
+	}
+
 	public String getDate() {
 		return Date;
 	}
@@ -63,80 +67,172 @@ final class Petrol implements GasStation {
 		Sale = sale;
 	}
 
-	
-	public static void AddTodyData(Petrol P) {
-		  Connection con = CreateConnection.getConnection();
-		  final String SQL = "insert into petrol values(?,?,?,?)";
-	        try(PreparedStatement stmt = con.prepareStatement(SQL)){
-	            stmt.setString(1,P.getDate());
-	            stmt.setDouble(2,P.getP_Price());
-	            stmt.setDouble(3,P.getS_Price());
-	            stmt.setDouble(4,P.getSale());
-	            int rowsAffected = stmt.executeUpdate();
-	            System.out.println(rowsAffected+" row has been added to petrol sales data.");
-	        }catch(SQLException e){
-	            e.printStackTrace();
-	        }
-
-	}
-
-	@Override
-	public void SearchByDate(String date) {
-		
-
-	}
-
-	
-	public static void UpdateData(Petrol Pt) {
-		Connection con = CreateConnection.getConnection();
-        final String SQL = "update petrol set P_price=?, S_price=? ,sale=? where dates=? ";
-        try(PreparedStatement stmt = con.prepareStatement(SQL)){
-        	  stmt.setDouble(1, Pt.getP_Price());
-        	  stmt.setDouble(2, Pt.getS_Price());
-        	  stmt.setDouble(3, Pt.getSale());
-        	  stmt.setString(4,Pt.getDate());
-          
-            
-            int rowsAffected = stmt.executeUpdate();
-            System.out.println(rowsAffected+" rows has been updated in petrol sale data.");
-        }catch(SQLException e){
-            e.printStackTrace();
-        }
-
-	}
-
-	
-	public static void DeleteData(String d) {
-		
-		  Connection con = CreateConnection.getConnection();
-		  final String SQL = "DELETE FROM petrol WHERE dates=?";
-	        try(PreparedStatement stmt = con.prepareStatement(SQL)){
-	            stmt.setString(1,d);
-	           
-	            int rowsAffected = stmt.executeUpdate();
-	            System.out.println(rowsAffected+" row has been deleted from petrol sales data.");
-	        }catch(SQLException e){
-	            e.printStackTrace();
-	        }
-
-	}
-
-	
 	@Override
 	public String toString() {
-		return "Date=" + Date + ", P_Price=" + P_Price + ", S_Price=" + S_Price + ", Sale=" + Sale + "]";
+		System.out.println("----------------------------------------------------------------------");
+		return "| Date=" + Date + "  | P_Price=" + P_Price + "  | S_Price=" + S_Price + "  | Sale=" + Sale + " |";
 	}
 
-	@Override
-	public void getAlldata() {
-		// TODO Auto-generated method stub
-		
+	public static void AddTodyData(Petrol P) {
+		Connection con = CreateConnection.getConnection();
+		final String SQL = "insert into petrol values(?,?,?,?)";
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			stmt.setString(1, P.getDate());
+			stmt.setDouble(2, P.getP_Price());
+			stmt.setDouble(3, P.getS_Price());
+			stmt.setDouble(4, P.getSale());
+			int rowsAffected = stmt.executeUpdate();
+			System.out.println(rowsAffected + " row has been added to petrol sales data.");
+			ptrl.add(P);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
 	}
 
-	@Override
-	public void searchByprofit() {
-		// TODO Auto-generated method stub
+	public static void UpdateData(Petrol Pt) {
+		Connection con = CreateConnection.getConnection();
+		final String SQL = "update petrol set P_price=?, S_price=? ,sale=? where dates=? ";
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			stmt.setDouble(1, Pt.getP_Price());
+			stmt.setDouble(2, Pt.getS_Price());
+			stmt.setDouble(3, Pt.getSale());
+			stmt.setString(4, Pt.getDate());
+
+			int rowsAffected = stmt.executeUpdate();
+			int n = ptrl.size();
+			int i;
+			for (i = 0; i < n; i++) {
+				if (ptrl.get(i).getDate().equals(Pt.getDate())) {
+
+					ptrl.set(i, Pt);
+				}
+			}
+			System.out.println(rowsAffected + " rows has been updated in petrol sale data.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static void DeleteData(String d) {
+
+		Connection con = CreateConnection.getConnection();
+		final String SQL = "DELETE FROM petrol WHERE dates=?";
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			stmt.setString(1, d);
+
+			int rowsAffected = stmt.executeUpdate();
+			int n = ptrl.size();
+			for (int i = 0; i < n; i++) {
+				if (ptrl.get(i).getDate().equals(d)) {
+
+					ptrl.remove(i);
+				}
+			}
+			System.out.println(rowsAffected + " row has been deleted from petrol sales data.");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	public static List<Petrol> Search(String date) {
+
+		List<Petrol> ptbydate = new ArrayList<>();
+		Connection con = CreateConnection.getConnection();
+		final String SQL = "select *from petrol where dates = ?";
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			stmt.setString(1, date);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Petrol pt = new Petrol(rs.getString("Dates"),rs.getDouble("P_Price"),rs.getDouble("S_Price"),rs.getDouble("Sale"));
+				ptbydate.add(pt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ptbydate;
+	}
+    
+	public static List<Petrol> Search(Double Pprice) {
+
+		List<Petrol> ptbyPprice = new ArrayList<>();
+		Connection con = CreateConnection.getConnection();
+		final String SQL = "select *from petrol where P_sale = ?";
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			stmt.setDouble(1, Pprice);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Petrol pt = new Petrol(rs.getString("Dates"),rs.getDouble("P_Price"),rs.getDouble("S_Price"),rs.getDouble("Sale"));
+				ptbyPprice.add(pt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ptbyPprice;
+	}
+	
+
+	public static 	List<Petrol> SearchBysale(double ltr, char opr) {
+		List<Petrol> ptbyPprice = new ArrayList<>();
+		Connection con = CreateConnection.getConnection();
+		String SQL;
+		if(opr=='>') {
+		     SQL = "select *from petrol where sale > ?";
+		}else if (opr=='<') {
+			 SQL = "select *from petrol where sale < ?";	
+		}else if(opr=='=') {
+			 SQL = "select *from petrol where sale = ?";
+		}else {
+			System.out.println("given operation is not possible");
+			return null;
+		}
+		try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			
+			
+			
+			stmt.setDouble(1, ltr);
+			
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Petrol pt = new Petrol(rs.getString("Dates"),rs.getDouble("P_Price"),rs.getDouble("S_Price"),rs.getDouble("Sale"));
+				ptbyPprice.add(pt);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return ptbyPprice;
 		
+
+//		switch (opr) {
+//		case '>':
+//			int n = ptrl.size();
+//			for (int i = 0; i < n; i++) {
+//				if (ptrl.get(i).getSale() < ltr) {
+//
+//					System.out.println(ptrl.get(i));
+//
+//				}
+//			}
+//			break;
+//		case '<':
+//			int n1 = ptrl.size();
+//			for (int i = 0; i < n1; i++) {
+//				if (ptrl.get(i).getSale() > ltr) {
+//
+//					System.out.println(ptrl.get(i));
+//
+//				}
+//			}
+//
+//			break;
+//
+//		default:
+//			System.out.println("The given Operation is not valid.");
+//		}
+
+	
 	}
 
 }
