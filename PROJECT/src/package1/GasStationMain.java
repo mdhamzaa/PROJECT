@@ -45,20 +45,21 @@ public class GasStationMain{
 		Scanner sc = new Scanner(System.in);
 		
 	
-//		int opr;
-//		do {
-//			System.out.println("------------------------------------");
-//			System.out.println(" ||     Wellcome To myGasStation   ||   ");
-//			System.out.println("------------------------------------");
-//			
-//			
-//	     opr = sc.nextInt();
-//	     
-//	     System.out.println("1)For Performing operations on petrol data.");
-//	     System.out.println("2)For Performing operations of diesel data.");
-//	     1)For Entering the data in the database table using CSV.
-//	     2)For Updating The Petrol data using Date.
-//	     3)For Delete the Petrol Data.
+		int opr;
+		do {
+			System.out.println("------------------------------------");
+			System.out.println(" ||     Wellcome To myGasStation   ||   ");
+		    System.out.println("------------------------------------");
+			
+			
+	     opr = sc.nextInt();
+	     
+	     System.out.println("1)For Performing operations on petrol data.");
+	     System.out.println("2)For Performing operations of diesel data.");
+	     
+	     1)For Entering the data in the database table using CSV.
+	     2)For Updating The Petrol data using Date.
+	     3)For Delete the Petrol Data.
 //	     4)For Searching the data using Date.
 //	     5)For Searching the data Greater or less than the Total Sale
 //         System.out.println();
@@ -92,11 +93,16 @@ public class GasStationMain{
 //		pt.stream().forEach(System.out::println);
 //        GasStation.ShowPetrolData();
         
-		List<Petrol> ptS =  Petrol.SearchBysale(20000,'<');
-		ptS.stream().forEach(System.out::println);
-        sc.close();
+//		List<Petrol> ptS =  Petrol.SearchBysale(20000,'>');
+//		ptS.stream().forEach(System.out::println);
+//       
+//       List<Petrol> Sor =  Petrol.sort("S_price");
+//		Sor.stream().forEach(System.out::println);
 
+		sc.close();
 	}
+	
+	
 	
 	
 	  

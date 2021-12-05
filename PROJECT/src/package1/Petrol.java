@@ -203,36 +203,24 @@ final class Petrol implements GasStation {
 			e.printStackTrace();
 		}
 		return ptbyPprice;
-		
-
-//		switch (opr) {
-//		case '>':
-//			int n = ptrl.size();
-//			for (int i = 0; i < n; i++) {
-//				if (ptrl.get(i).getSale() < ltr) {
-//
-//					System.out.println(ptrl.get(i));
-//
-//				}
-//			}
-//			break;
-//		case '<':
-//			int n1 = ptrl.size();
-//			for (int i = 0; i < n1; i++) {
-//				if (ptrl.get(i).getSale() > ltr) {
-//
-//					System.out.println(ptrl.get(i));
-//
-//				}
-//			}
-//
-//			break;
-//
-//		default:
-//			System.out.println("The given Operation is not valid.");
-//		}
+			}
 
 	
-	}
-
+	  public static List<Petrol> sort(String colname){
+			List<Petrol> sorted = new ArrayList<>();
+			Connection con = CreateConnection.getConnection();
+			 String SQL = "select *from petrol ORDER BY "+colname+ " ASC";
+			try (PreparedStatement stmt = con.prepareStatement(SQL)) {
+			    
+				ResultSet rs = stmt.executeQuery();
+				while (rs.next()) {
+					Petrol pt = new Petrol(rs.getString("Dates"),rs.getDouble("P_Price"),rs.getDouble("S_Price"),rs.getDouble("Sale"));
+					sorted.add(pt);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			return sorted;
+		  
+	  }
 }
